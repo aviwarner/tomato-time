@@ -8,9 +8,10 @@ class Timer extends Component {
     this.state = {
       timeRemaining: 0,
       intervalId: 0,
-      workTime: 10,
-      shortBreak: 5,
-      longBreak: 15,
+      workTime: 10, // seconds of work sessions - 1500 default
+      shortBreak: 5, // seconds of short breaks - 300 default
+      longBreak: 15, // seconds of long break - 1800 default
+      workCount: 0,
       timerStatus: 'work'
     };
     this.startTimer = this.startTimer.bind(this);
@@ -52,11 +53,23 @@ class Timer extends Component {
 // Switches from work to break, clears interval, sets timer status and time in state
   switchTimer() {
     clearInterval(this.state.intervalId);
-    const newStatus = (this.state.timerStatus === 'work') ? ['break', this.state.shortBreak] : ['work', this.state.workTime];
+    let newStatus = []
+    newStatus[0] = this.state.timerStatus === 'work' ?  'break' : 'work';
+    if (this.state.workCount < 3 && this.state.timerStatus === 'work') {
+      newStatus[1] = this.state.shortBreak;
+      newStatus[2] = this.state.workCount + 1;
+    } else if (this.state.timerStatus === 'break') {
+      newStatus[1] = this.state.workTime;
+      newStatus[2] = this.state.workCount;
+    } else {
+      newStatus[1] = this.state.longBreak;
+      newStatus[2] = 0;
+    }
     this.setState({
       intervalId: 0,
       timerStatus: newStatus[0],
-      timeRemaining: newStatus[1]
+      timeRemaining: newStatus[1],
+      workCount: newStatus[2]
     });
   }
 
