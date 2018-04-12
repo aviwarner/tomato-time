@@ -16,6 +16,7 @@ class Timer extends Component {
     };
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.ding = new Audio('/assets/ding.mp3');
   }
 
   formatTime(time) {
@@ -39,6 +40,11 @@ class Timer extends Component {
     }
   }
 
+  playDing() {
+    this.ding.load();
+    this.ding.play();
+  }
+
 // if working, resets work time, if on break, call switchTimer
   resetClick() {
     if (this.state.timerStatus === 'work') {
@@ -55,7 +61,7 @@ class Timer extends Component {
     clearInterval(this.state.intervalId);
     const newStatus = this.state.timerStatus === 'work' ?  'break' : 'work';
     let newTime = '';
-    let newCount = ''; 
+    let newCount = '';
     if (this.state.workCount < 3 && this.state.timerStatus === 'work') {
       newTime = this.state.shortBreak;
       newCount = this.state.workCount + 1;
@@ -80,6 +86,7 @@ class Timer extends Component {
       timeRemaining: seconds
     });
     if (seconds === 0) {
+      this.playDing();
       this.switchTimer();
     }
   }
