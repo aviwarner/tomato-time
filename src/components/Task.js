@@ -41,7 +41,7 @@ class Task extends Component {
   }
 
   render() {
-    const tasks = this.state.tasks.filter(t => t.userId === this.props.userId);
+    const tasks = this.state.tasks.filter(t => t.userId === this.props.userId).sort(function(a,b) { return b.createdAt - a.createdAt});
 
     return(
       <section>
@@ -61,7 +61,7 @@ class Task extends Component {
         <Table striped>
           <thead>
             <tr>
-              <th onClick={() => this.testTask()} className="tasks">Task History</th>
+              <th onClick={() => this.sortTasks()} className="tasks">Task History</th>
               <th className="timestamp">Created</th>
             </tr>
           </thead>
