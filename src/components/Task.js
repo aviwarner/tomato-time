@@ -61,7 +61,7 @@ class Task extends Component {
         <Table striped>
           <thead>
             <tr>
-              <th onClick={() => this.sortTasks()} className="tasks">Task History</th>
+              <th className="tasks">Task History</th>
               <th className="timestamp">Created</th>
             </tr>
           </thead>
