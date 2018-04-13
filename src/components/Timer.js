@@ -103,7 +103,7 @@ class Timer extends Component {
 
   render() {
     return(
-      <div>
+      <section>
         <h1>{this.formatTime(this.state.timeRemaining)}</h1>
         {this.state.intervalId === 0
           ? <Button bsStyle="primary" onClick={() => this.startTimer()}>
@@ -119,7 +119,7 @@ class Timer extends Component {
             }
           </Button>
         }
-      </div>
+      </section>
     )
   }
 }

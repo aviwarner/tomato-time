@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import Timer from './components/Timer';
+import User from './components/User';
+import Task from './components/Task';
 import * as firebase from 'firebase';
+import { Jumbotron } from 'react-bootstrap';
 
 // Initialize Firebase
 var config = {
@@ -15,13 +18,41 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: '',
+      userId: ''
+    };
+  }
+
+  setUser(user) {
+    this.setState({
+      currentUser: user ? user.displayName : "Guest",
+      userId: user ? user.uid : "n/a"
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <Timer
-          firebase={firebase}
-        />
-      </div>
+      <section className="App">
+        <div className="container">
+          <Jumbotron className="app-frame">
+            <User
+              firebase={firebase}
+              currentUser={this.state.currentUser}
+              setUser={(user) => this.setUser(user)}
+            />
+            <Timer
+              firebase={firebase}
+            />
+            <Task
+              firebase={firebase}
+              userId={this.state.userId}
+            />
+          </Jumbotron>
+        </div>
+      </section>
     );
   }
 }
