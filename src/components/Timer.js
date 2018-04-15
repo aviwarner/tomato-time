@@ -8,11 +8,12 @@ class Timer extends Component {
     this.state = {
       timeRemaining: 0,
       intervalId: 0,
-      workTime: 70, // seconds of work sessions - 1500 default
+      workTime: 10, // seconds of work sessions - 1500 default
       shortBreak: 5, // seconds of short breaks - 300 default
       longBreak: 15, // seconds of long break - 1800 default
       workCount: 0,
-      timerStatus: 'work'
+      timerStatus: 'work',
+      paused: false
     };
 
     this.startTimer = this.startTimer.bind(this);
@@ -22,8 +23,8 @@ class Timer extends Component {
   }
 
   formatTime(time) {
-    const sec = Math.round(time % 60);
-    const min = Math.floor(time / 60);
+    let sec = Math.round(time % 60);
+    let min = Math.floor(time / 60);
     if (Number.isNaN(sec) || Number.isNaN(min)) {
       return "-:--"
     } else if (sec < 10) {
@@ -35,7 +36,7 @@ class Timer extends Component {
 
   startTimer() {
     if (this.state.intervalId === 0) {
-      const intervalId = setInterval(this.countDown, 1000)
+      let intervalId = setInterval(this.countDown, 1000)
       this.setState({
         intervalId: intervalId
       });
@@ -61,7 +62,7 @@ class Timer extends Component {
 // Switches from work to break, clears interval, sets timer status and time in state
   switchTimer() {
     clearInterval(this.state.intervalId);
-    const newStatus = this.state.timerStatus === 'work' ?  'break' : 'work';
+    let newStatus = this.state.timerStatus === 'work' ?  'break' : 'work';
     let newTime = '';
     let newCount = '';
     if (this.state.workCount < 3 && this.state.timerStatus === 'work') {
@@ -88,8 +89,8 @@ class Timer extends Component {
       timeRemaining: seconds
     });
 
-    const clockSecs = (seconds % 60) - 1
-    const clockMins = Math.floor(seconds / 60) - 1;
+    let clockSecs = (seconds % 60) - 1
+    let clockMins = Math.floor(seconds / 60) - 1;
 
     this.setClock(clockSecs, clockMins);
 
@@ -97,6 +98,19 @@ class Timer extends Component {
       this.setSeconds(-1, -1);
       this.playDing();
       this.switchTimer();
+    }
+  }
+
+  handlePause() {
+    if (this.state.paused) {
+      this.setState({ paused: false })
+      let intervalId = setInterval(this.countDown, 1000)
+      this.setState({
+        intervalId: intervalId
+      });
+    } else {
+      this.setState({ paused: true })
+      clearInterval(this.state.intervalId)
     }
   }
 
@@ -111,18 +125,18 @@ class Timer extends Component {
   }
 
   setSeconds(sec) {
-    const r = ((sec + 1) * 6) + 90;
+    let r = ((sec + 1) * 6) + 90;
     document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${r}deg)`;
   }
 
   setMinutes(min) {
-    const r = ((min + 1) * 6) + 90;
+    let r = ((min + 1) * 6) + 90;
     this.minuteHand.style.transform = `rotate(${r}deg)`;
   }
 
   setClock(sec, min) {
-    const s = ((sec + 1) * 6) + 90;
-    const m = ((min + 1) * 6) + 90;
+    let s = ((sec + 1) * 6) + 90;
+    let m = ((min + 1) * 6) + 90;
     document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${s}deg)`;
     document.getElementsByClassName("min-hand")[0].style.transform = `rotate(${m}deg)`;
   }
@@ -135,19 +149,26 @@ class Timer extends Component {
             <Col md={6} xs={12}>
               <h1>{this.formatTime(this.state.timeRemaining)}</h1>
               {this.state.intervalId === 0
-                ? <Button bsStyle="primary" onClick={() => this.startTimer()}>
+                ? <Button bsStyle="primary" className="timer-button" onClick={() => this.startTimer()}>
                   {this.state.timerStatus === 'work'
                     ? "Start work"
                     : "Start break"
                   }
                 </Button>
-                : <Button bsStyle="warning" onClick={() => this.resetClick()}>
+                : <Button bsStyle="warning" className="timer-button" onClick={() => this.resetClick()}>
                   {this.state.timerStatus === 'work'
                     ? "Reset work"
                     : "Stop break"
                   }
                 </Button>
               }
+              {this.state.intervalId !== 0
+                ? <Button bsStyle="info" onClick={() => this.handlePause()}>
+                  {this.state.paused ? 'Resume' : 'Pause' }
+                </Button>
+                : ''
+              }
+
             </Col>
             <Col md={6} xs={12}>
               <div className="clock">
