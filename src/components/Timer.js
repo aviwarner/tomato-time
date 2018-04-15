@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 
 class Timer extends Component {
   constructor(props) {
@@ -8,14 +8,16 @@ class Timer extends Component {
     this.state = {
       timeRemaining: 0,
       intervalId: 0,
-      workTime: 10, // seconds of work sessions - 1500 default
+      workTime: 70, // seconds of work sessions - 1500 default
       shortBreak: 5, // seconds of short breaks - 300 default
       longBreak: 15, // seconds of long break - 1800 default
       workCount: 0,
       timerStatus: 'work'
     };
+
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+
     this.ding = new Audio('/assets/ding.mp3');
   }
 
@@ -85,7 +87,14 @@ class Timer extends Component {
     this.setState({
       timeRemaining: seconds
     });
+
+    const clockSecs = (seconds % 60) - 1
+    const clockMins = Math.floor(seconds / 60) - 1;
+
+    this.setClock(clockSecs, clockMins);
+
     if (seconds === 0) {
+      this.setSeconds(-1, -1);
       this.playDing();
       this.switchTimer();
     }
@@ -101,24 +110,55 @@ class Timer extends Component {
     clearInterval(this.state.intervalId);
   }
 
+  setSeconds(sec) {
+    const r = ((sec + 1) * 6) + 90;
+    document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${r}deg)`;
+  }
+
+  setMinutes(min) {
+    const r = ((min + 1) * 6) + 90;
+    this.minuteHand.style.transform = `rotate(${r}deg)`;
+  }
+
+  setClock(sec, min) {
+    const s = ((sec + 1) * 6) + 90;
+    const m = ((min + 1) * 6) + 90;
+    document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${s}deg)`;
+    document.getElementsByClassName("min-hand")[0].style.transform = `rotate(${m}deg)`;
+  }
+
   render() {
     return(
       <section>
-        <h1>{this.formatTime(this.state.timeRemaining)}</h1>
-        {this.state.intervalId === 0
-          ? <Button bsStyle="primary" onClick={() => this.startTimer()}>
-            {this.state.timerStatus === 'work'
-              ? "Start work"
-              : "Start break"
-            }
-          </Button>
-          : <Button bsStyle="warning" onClick={() => this.resetClick()}>
-            {this.state.timerStatus === 'work'
-              ? "Reset work"
-              : "Stop break"
-            }
-          </Button>
-        }
+        <Grid>
+          <Row>
+            <Col md={6} xs={12}>
+              <h1>{this.formatTime(this.state.timeRemaining)}</h1>
+              {this.state.intervalId === 0
+                ? <Button bsStyle="primary" onClick={() => this.startTimer()}>
+                  {this.state.timerStatus === 'work'
+                    ? "Start work"
+                    : "Start break"
+                  }
+                </Button>
+                : <Button bsStyle="warning" onClick={() => this.resetClick()}>
+                  {this.state.timerStatus === 'work'
+                    ? "Reset work"
+                    : "Stop break"
+                  }
+                </Button>
+              }
+            </Col>
+            <Col md={6} xs={12}>
+              <div className="clock">
+                <div className="clock-face">
+                  <div className="hand min-hand"></div>
+                  <div className="hand second-hand"></div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Grid>
       </section>
     )
   }

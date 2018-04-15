@@ -25,3 +25,42 @@
   min-width: 300px;
   margin-right: 1rem;
 }
+
+.clock {
+  width: 20rem;
+  height: 20rem;
+  border:10px solid white;
+  border-radius:50%;
+  margin: auto;
+  position: relative;
+  padding:1rem;
+  box-shadow:
+    0 0 0 4px rgba(0,0,0,0.1),
+    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 10px black,
+    0 0 10px rgba(0,0,0,0.2);
+}
+
+.clock-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-3px); /* account for the height of the clock hands */
+}
+
+.hand {
+  width:50%;
+  height:6px;
+  background:black;
+  position: absolute;
+  top:50%;
+  transform-origin: right;
+  transition: 0.05s;
+  transition-timing-function: cubic-bezier();
+  transform: rotate(90deg);
+}
+
+.second-hand {
+  background-color: red;
+  height: 2px;
+}
