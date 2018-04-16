@@ -59,8 +59,7 @@
   position: absolute;
   top:50%;
   transform-origin: right;
-  transition: 0.05s;
-  transition-timing-function: cubic-bezier();
+  transition: 0.35s;
   transform: rotate(90deg);
 }
 
