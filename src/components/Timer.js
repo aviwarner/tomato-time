@@ -124,21 +124,15 @@ class Timer extends Component {
     clearInterval(this.state.intervalId);
   }
 
-  setSeconds(sec) {
-    let r = ((sec + 1) * 6) + 90;
-    document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${r}deg)`;
-  }
-
-  setMinutes(min) {
-    let r = ((min + 1) * 6) + 90;
-    this.minuteHand.style.transform = `rotate(${r}deg)`;
-  }
-
   setClock(sec, min) {
     let s = ((sec + 1) * 6) + 90;
+    if (s >= 360) {
+      s -= 360;
+    }
     let m = ((min + 1) * 6) + 90;
     document.getElementsByClassName("second-hand")[0].style.transform = `rotate(${s}deg)`;
     document.getElementsByClassName("min-hand")[0].style.transform = `rotate(${m}deg)`;
+    console.log()
   }
 
   render() {
