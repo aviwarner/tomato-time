@@ -53,6 +53,8 @@ class App extends Component {
                 />
               : ''
             }
+            <hr className="footer-rule"></hr>
+            <small className="explainer">Get more work done using the <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">Pomodoro Technique</a>.</small>
           </Jumbotron>
         </div>
       </section>
