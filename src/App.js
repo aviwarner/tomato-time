@@ -46,10 +46,13 @@ class App extends Component {
             <Timer
               firebase={firebase}
             />
-            <Task
-              firebase={firebase}
-              userId={this.state.userId}
-            />
+            { this.state.currentUser !== 'Guest'
+              ? <Task
+                firebase={firebase}
+                userId={this.state.userId}
+                />
+              : ''
+            }
           </Jumbotron>
         </div>
       </section>
