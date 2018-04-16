@@ -8,9 +8,9 @@ class Timer extends Component {
     this.state = {
       timeRemaining: 0,
       intervalId: 0,
-      workTime: 10, // seconds of work sessions - 1500 default
-      shortBreak: 5, // seconds of short breaks - 300 default
-      longBreak: 15, // seconds of long break - 1800 default
+      workTime: 1500, // seconds of work sessions - 1500 default
+      shortBreak: 300, // seconds of short breaks - 300 default
+      longBreak: 1800, // seconds of long break - 1800 default
       workCount: 0,
       timerStatus: 'work',
       paused: false
