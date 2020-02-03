@@ -2,7 +2,7 @@
 
 A Pomodoro Technique timer built with React & Firebase.
 
-Specialization project for Bloc Web Developer Track. 
+Check it out @ https://timer.aviwarner.com/
 
 ## Built with
 
