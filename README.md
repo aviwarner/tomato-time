@@ -6,6 +6,5 @@ Check it out @ https://timer.aviwarner.com/
 
 ## Built with
 
-[ReactJS](https://reactjs.org/) - Framework
-[Firebase](https://firebase.google.com/) - Data store
-[React bootstrap](https://react-bootstrap.github.io/) - front-end Framework
+- [ReactJS](https://reactjs.org/) - Front end
+- [Firebase](https://firebase.google.com/) - Data store
